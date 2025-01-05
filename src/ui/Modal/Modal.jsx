@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
-import { v4 as uuidv4 } from "uuid"; // Import the UUID function
+import { v4 as uuidv4 } from "uuid";
 import useModalStore from "../../store/useModalStore";
 import { useNoteStore } from "../../store/useNotesStore";
 import styles from "./ModalComponent.module.css";
@@ -24,18 +24,38 @@ const customStyles = {
 };
 
 const ModalComponent = () => {
-  const { modalIsOpen, closeModal } = useModalStore();
-  const { addNote } = useNoteStore();
-
+  const { modalIsOpen, selectedNote, closeModal } = useModalStore();
+  const { addNote, updateNote, deleteNote } = useNoteStore();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
+  // Update the form inputs when selected note changes
+  useEffect(() => {
+    if (selectedNote) {
+      setTitle(selectedNote.title);
+      setDescription(selectedNote.description);
+    }
+  }, [selectedNote]);
+
   const handleSubmit = () => {
     if (title && description) {
-      const noteId = uuidv4(); // Generate a unique ID for the note
-      addNote({ id: noteId, title, description });
-      setTitle("");
-      setDescription("");
+      const noteId = selectedNote?.id || uuidv4(); // Generate a unique ID if creating a new note
+      if (selectedNote) {
+        updateNote(noteId, { title, description });
+      } else {
+        addNote({
+          id: noteId,
+          title,
+          description,
+        });
+      }
+      closeModal();
+    }
+  };
+
+  const handleDelete = () => {
+    if (selectedNote) {
+      deleteNote(selectedNote.id);
       closeModal();
     }
   };
@@ -47,9 +67,11 @@ const ModalComponent = () => {
       isOpen={modalIsOpen}
       onRequestClose={closeModal}
       style={customStyles}
-      contentLabel="Create Note"
+      contentLabel="Edit Note"
     >
-      <h2 style={{ marginBottom: "12px" }}>Create Note</h2>
+      <h2 style={{ marginBottom: "12px" }}>
+        {selectedNote ? "Edit Note" : "Create Note"}
+      </h2>
       <div className={styles.formGroup}>
         <input
           type="text"
@@ -66,12 +88,14 @@ const ModalComponent = () => {
         />
       </div>
       <div className={styles.actions}>
-        <button
-          className={styles.cancelButton}
-          onClick={closeModal}
-        >
+        <button className={styles.cancelButton} onClick={closeModal}>
           Cancel
         </button>
+        {selectedNote && (
+          <button className={styles.deleteButton} onClick={handleDelete}>
+            Delete Note
+          </button>
+        )}
         <button
           className={styles.createButton}
           onClick={handleSubmit}
@@ -81,7 +105,7 @@ const ModalComponent = () => {
             cursor: isSubmitDisabled ? "not-allowed" : "pointer",
           }}
         >
-          Create
+          {selectedNote ? "Update" : "Create"}
         </button>
       </div>
     </Modal>
