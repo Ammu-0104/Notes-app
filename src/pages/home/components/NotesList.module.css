@@ -1,54 +1,72 @@
-/* Notes list container */
+/* Main container for notes */
 .notesList {
   display: flex;
-  gap: 1.5rem;
-  padding: 1rem;
+  gap: 2rem;
+  padding: 1.5rem 0;
   flex-wrap: wrap;
 }
 
 /* Left section (notes list) */
 .notesLeft {
   flex: 1;
-  max-width: 350px;
+  max-width: 300px;
   display: flex;
   flex-direction: column;
   gap: 1rem;
   padding-right: 1rem;
 }
 
-/* Search input styles */
-.searchInput {
-  padding: 12px;
-  border-radius: 25px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-  width: 100%;
-  transition: border 0.3s ease, box-shadow 0.3s ease;
-  margin-bottom: 20px;
-  background-color: #f9f9f9;
+/* Top section with search input and create button */
+.notesTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
 }
 
-.searchInput:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+/* Search input field */
+.searchInput {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid #ccc;
+  border-radius: 24px;
+  font-size: 1rem;
+  color: #333;
+  background-color: #fff;
+  outline: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .searchInput::placeholder {
   color: #aaa;
 }
 
-/* Card styles */
-.notesCard {
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+.searchInput:focus {
+  border-color: #007bff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.notesCard:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+/* Scrollable container for notes list */
+.notesListContent {
+  max-height: 400px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  scrollbar-color: #ccc #f1f1f1;
+}
+
+.notesListContent::-webkit-scrollbar {
+  width: 8px;
+}
+
+.notesListContent::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.notesListContent::-webkit-scrollbar-thumb:hover {
+  background-color: #888;
 }
 
 /* Right section (note details) */
@@ -59,19 +77,39 @@
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 100%;
+  /* max-width: 600px; */
 }
 
-/* Title and description */
+/* Title and description styles */
 .cardTitle {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 12px;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 1rem;
 }
 
 .cardDescription {
-  font-size: 1.1rem;
+  font-size: 16px;
   color: #555;
+  margin-top: 8px;
   line-height: 1.5;
-  margin-top: 10px;
+}
+
+/* Styling for the delete button */
+.deleteButton {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.deleteButton:hover {
+  background-color: #c0392b;
+}
+
+.deleteButton:focus {
+  outline: none;
 }
