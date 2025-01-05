@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import CreateButton from './CreateButton';
 import NotesCard from './NotesCard';
@@ -13,6 +13,7 @@ const truncateText = (text, maxLength = 25) => {
 
 const NotesList = () => {
   const { notes, deleteNote } = useNoteStore();
+  const [searchQuery, setSearchQuery] = useState(''); // State to store the search query
   const location = useLocation();
 
   const queryParams = new URLSearchParams(location.search);
@@ -38,22 +39,50 @@ const NotesList = () => {
     }
   };
 
+  // Handle search input change
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  // Filter notes based on the search query
+  const filteredNotes = notes.filter((note) =>
+    note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    note.description.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className={styles.notesList}>
       <div className={styles.notesLeft}>
         <div className={styles.notesTop}>
-          <input type="text" placeholder="Search notes..." className={styles.searchInput} />
+          <input
+            type="text"
+            placeholder="Search notes..."
+            className={styles.searchInput}
+            value={searchQuery}
+            onChange={handleSearchChange} // Update search query on input change
+          />
           <CreateButton />
         </div>
         <div className={styles.notesListContent}>
-          {notes?.map((note) => (
-            <NotesCard key={note.id} note={note} />
-          ))}
+          {filteredNotes.length === 0 ? (
+            <p>No notes found</p> // Show message if no notes match the search query
+          ) : (
+            filteredNotes.map((note) => (
+              <NotesCard key={note.id} note={note} />
+            ))
+          )}
         </div>
       </div>
       <div className={styles.notesRight}>
         <div className={styles.notesCardDetail}>
-          <div style={{display:"flex" , gap:"12px",width:"100%",justifyContent:"space-between"}}>
+          <div
+            style={{
+              display: 'flex',
+              gap: '12px',
+              width: '100%',
+              justifyContent: 'space-between',
+            }}
+          >
             <h2 className={styles.cardTitle}>{selectedTitle}</h2>
             <button className={styles.deleteButton} onClick={handleDeleteNote}>
               Delete Note
