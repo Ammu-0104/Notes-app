@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-import styles from "./Form.module.css"; 
+import styles from "./form.module.css"; 
 import video from "../assets/videos/loginVideo.mp4";
 import useUserStore from "../store/useUserStore";
 
