@@ -1,0 +1,22 @@
+/* Home.module.css */
+.home {
+    font-family: Arial, sans-serif;
+    background-color: var(--background);
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  
+  .contain {
+    padding: 2rem;
+  }
+  
+  .container {
+    margin-top: 1rem;
+  }
+   .homeTitle{
+    margin-bottom: 12px;
+    font-size: 20px;
+  }
